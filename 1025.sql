@@ -22,3 +22,7 @@ FROM departments d FULL OUTER JOIN locations l ON d.location_id = l.location_id;
 -- (사원이 없는 부서번호도 조회)
 SELECT first_name, salary, d.department_id, department_name
 FROM employees e right outer join departments d ON e.department_id=d.department_id AND salary(+) > 2000;
+
+-- 기준인 경우에는 salary(+)을 뺀다
+SELECT first_name, salary, d.department_id, department_name
+FROM employees e left outer join departments d ON e.department_id = d.department_id AND salary > 2000;
