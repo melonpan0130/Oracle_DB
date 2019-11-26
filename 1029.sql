@@ -61,3 +61,6 @@ GROUP BY department_id
 HAVING MIN(salary) > (SELECT MIN(salary) FROM employees
                       WHERE department_id = 80)
 ORDER BY 1;
+
+
+
