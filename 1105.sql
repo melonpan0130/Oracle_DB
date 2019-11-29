@@ -9,20 +9,26 @@ order by department_id;
 -- 이름, 급여, 업무코드를 급여 순으로 조회
 SELECT first_name, salary, department_id
 FROM employees
-WHERE salary > (SELECT MIN(salary)
+WHERE salary > ANY (SELECT salary
     FROM employees NATURAL JOIN jobs
     WHERE job_title LIKE '%Sales%')
 ORDER BY 2;
 
 SELECT first_name, salary, department_id
 FROM employees
-WHERE salary > ANY (SELECT salary
+WHERE salary > (SELECT MIN(salary)
     FROM employees NATURAL JOIN jobs
     WHERE job_title LIKE '%Sales%')
 ORDER BY 2;
 
 
-
 -- 다중 열 서브쿼리
+select first_name, manager_id, department_id
+from employees
+where first_name NOT IN ('Diana', 'Adam')
+ AND (manager_id, department_id) IN 
+ (select manager_id, department_id from employees where first_name in('Diana', 'Adam'));
+
+
 -- #.1
 
