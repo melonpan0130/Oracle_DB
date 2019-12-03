@@ -37,22 +37,23 @@ AND (manager_id, department_id)
     IN (SELECT manager_id, department_id FROM employees WHERE first_name in('Diana', 'Adam'));
 -- pairwise
 
--- #.1
-select department_id, employee_id, first_name, salary
-from employees 
-where (department_id, salary) in (select department_id, min(salary) from employees) OR salary = (select max(salary) from employees);
-
-select department_id, min(salary), max(salary) from employees
-group by department_id;
-
-
+-- #.1 각 부서별로 최대급여를 받는 사원과 최소급여를 받는 사원의 부서번호, 사원번호, 사원이름, 급여 조회
 SELECT department_id, employee_id, first_name, salary
 FROM employees 
 WHERE (department_id, salary) IN (SELECT department_id, MIN(salary)
         FROM employees
+        GROUP BY department_id
+        UNION
+        SELECT department_id, MAX(salary)
+        FROM employees
         GROUP BY department_id)
-OR (department_id, salary) IN (SELECT department_id, max(salary) 
-        from employees
-        group by department_id)
-order by 1;
+ORDER BY 1;
+-- pairwise
 
+SELECT department_id, employee_id, first_name, salary
+FROM employees e
+WHERE salary IN (SELECT MIN(salary)
+        FROM employees where department_id = e.department_id)
+   OR salary IN (SELECT MAX(salary)
+        FROM employees where department_id = e.department_id)
+ORDER BY 1;
